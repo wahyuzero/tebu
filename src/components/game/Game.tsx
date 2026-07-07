@@ -677,67 +677,71 @@ function GameplayScreen({
   // Letters panel (right on desktop/landscape, bottom on mobile portrait)
   // Includes: instruction image (placeholder), answer slots, letter pool
   const lettersPanel = (
-    <div className={`flex flex-col items-center ${isCompact ? "gap-2" : "gap-4 sm:gap-5"} w-full max-w-lg`}>
-      {/* Instruction image — hidden on compact to save space */}
-      {!isCompact && (
-        <img
-          src={ASSETS.text.mainGame}
-          alt="Susun Huruf Menjadi Nama Buah Yang Benar"
-          className="w-full max-w-md h-auto object-contain drop-shadow-md"
-        />
-      )}
-
-      {/* Answer slots */}
-      <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-2" : "gap-3 sm:gap-4 md:gap-5"}`}>
-        {slots.map((slot, i) => (
-          <AnswerSlot
-            key={i}
-            ref={(el: HTMLButtonElement | null) => {
-              if (el) slotRefs.current.set(i, el);
-              else slotRefs.current.delete(i);
-            }}
-            letter={slot.letter}
-            filled={slot.id !== -1}
-            wrong={wrong}
-            onClick={() => removeLetter(i)}
-            compact={isCompact}
+    <div className="flex flex-col items-center w-full max-w-lg h-full">
+      {/* Top section: instruction + answer slots — fixed size */}
+      <div className={`flex flex-col items-center ${isCompact ? "gap-2" : "gap-3"} w-full flex-shrink-0`}>
+        {/* Instruction image — hidden on compact to save space */}
+        {!isCompact && (
+          <img
+            src={ASSETS.text.mainGame}
+            alt="Susun Huruf Menjadi Nama Buah Yang Benar"
+            className="w-full max-w-md h-auto object-contain drop-shadow-md"
           />
-        ))}
-      </div>
+        )}
 
-      {/* Letter pool — Frame_Huruf.png applied as a 9-slice border-image so the
-          frame stretches freely (no aspect-ratio lock). Tile size is a fixed
-          responsive value, so letters are always large & readable regardless
-          of how many tiles or what screen size. */}
-      <FrameBox
-        src={ASSETS.backgrounds.frameHuruf}
-        className="w-full bg-black/35"
-      >
-        <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-1.5 p-2" : "gap-2 sm:gap-3 p-3 sm:p-4"}`}>
-          {pool.map((p) => (
-            <LetterTile
-              key={p.id}
+        {/* Answer slots */}
+        <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-2" : "gap-3 sm:gap-4 md:gap-5"}`}>
+          {slots.map((slot, i) => (
+            <AnswerSlot
+              key={i}
               ref={(el: HTMLButtonElement | null) => {
-                if (el) poolTileRefs.current.set(p.id, el);
-                else poolTileRefs.current.delete(p.id);
+                if (el) slotRefs.current.set(i, el);
+                else slotRefs.current.delete(i);
               }}
-              letter={p.letter}
-              disabled={p.used || result !== null}
-              onClick={() => placeLetter(p.id)}
+              letter={slot.letter}
+              filled={slot.id !== -1}
+              wrong={wrong}
+              onClick={() => removeLetter(i)}
               compact={isCompact}
             />
           ))}
         </div>
-      </FrameBox>
+      </div>
 
-      {/* Shuffle button */}
-      {!result && (
-        <button
-          onClick={shufflePool}
-          className={`${isCompact ? "mt-0.5 px-4 py-1.5" : "mt-1 px-7 py-2.5"} rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform`}
+      {/* Middle section: letter pool — takes remaining space (flex-1 min-h-0) */}
+      <div className="flex-1 min-h-0 w-full flex items-center justify-center py-1">
+        <FrameBox
+          src={ASSETS.backgrounds.frameHuruf}
+          className="w-full bg-black/35"
         >
-          <span className={`${isCompact ? "fl-text" : "fl-text-lg"} font-bold text-white`}>Acak Huruf</span>
-        </button>
+          <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-1.5 p-2" : "gap-2 sm:gap-3 p-2 sm:p-3"}`}>
+            {pool.map((p) => (
+              <LetterTile
+                key={p.id}
+                ref={(el: HTMLButtonElement | null) => {
+                  if (el) poolTileRefs.current.set(p.id, el);
+                  else poolTileRefs.current.delete(p.id);
+                }}
+                letter={p.letter}
+                disabled={p.used || result !== null}
+                onClick={() => placeLetter(p.id)}
+                compact={isCompact}
+              />
+            ))}
+          </div>
+        </FrameBox>
+      </div>
+
+      {/* Bottom section: shuffle button — always visible, fixed at bottom */}
+      {!result && (
+        <div className="flex-shrink-0 pb-1 pt-1">
+          <button
+            onClick={shufflePool}
+            className={`${isCompact ? "px-4 py-1.5" : "px-7 py-2.5"} rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform`}
+          >
+            <span className={`${isCompact ? "fl-text" : "fl-text-lg"} font-bold text-white`}>Acak Huruf</span>
+          </button>
+        </div>
       )}
     </div>
   );
