@@ -229,7 +229,7 @@ function MusicToggleButton({
         />
         {!musicOn && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-[120%] h-1.5 sm:h-2 bg-red-600 rotate-45 rounded-full shadow-lg" />
+            <div className="w-[120%] h-[3px] bg-red-600 rotate-45 rounded-full shadow-lg" />
           </div>
         )}
       </div>
@@ -373,7 +373,7 @@ function FruitPreviewScreen({
           />
         </FrameBox>
         {/* spacer to balance */}
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+        <div className="fl-icon-sm" />
       </div>
 
       {/* Fruit grid — each card uses a flexible FrameBox */}
@@ -388,7 +388,7 @@ function FruitPreviewScreen({
               <img
                 src={fruit.image}
                 alt={fruit.display}
-                className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain drop-shadow-md hover:scale-110 transition-transform"
+                className="w-[clamp(3rem,16vw,8rem)] h-[clamp(3rem,16vw,8rem)] object-contain drop-shadow-md hover:scale-110 transition-transform"
               />
             </FrameBox>
           ))}
@@ -446,7 +446,7 @@ function LevelSelectScreen({
           />
         </FrameBox>
         {/* spacer to balance */}
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+        <div className="fl-icon-sm" />
       </div>
 
       {/* Level grid — responsive: 2 cols on small, 5 cols on large */}
@@ -464,7 +464,7 @@ function LevelSelectScreen({
                 <img
                   src={ASSETS.buttons.level(idx + 1)}
                   alt={`Level ${idx + 1}`}
-                  className="w-full h-auto object-contain drop-shadow-lg"
+                  className="w-full h-auto object-contain drop-shadow-lg fl-img-sm"
                 />
                 {completed && (
                   <span
@@ -729,7 +729,7 @@ function GameplayScreen({
           onClick={shufflePool}
           className="mt-1 px-7 py-2.5 rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform"
         >
-          <span className="text-base sm:text-lg font-bold text-white">Acak Huruf</span>
+          <span className="fl-text-lg font-bold text-white">Acak Huruf</span>
         </button>
       )}
     </div>
@@ -761,7 +761,7 @@ function GameplayScreen({
           className="h-14 sm:h-[4.5rem] md:h-24 w-auto object-contain drop-shadow-lg"
         />
         {/* spacer for centering */}
-        <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20" />
+        <div className="fl-icon-sm" />
       </div>
 
       {/* Main gameplay area: side-by-side on desktop/landscape, stacked on mobile portrait */}
@@ -817,7 +817,7 @@ const AnswerSlot = forwardRef<
       ref={ref}
       onClick={onClick}
       disabled={!filled}
-      className={`relative w-14 h-16 sm:w-16 sm:h-[4.5rem] md:w-20 md:h-24 flex items-center justify-center transition-all ${
+      className={`relative w-[clamp(2rem,10vw,3.5rem)] h-[clamp(2.5rem,12vw,4.5rem)] flex items-center justify-center transition-all ${
         filled ? "hover:scale-105 active:scale-95 cursor-pointer" : "cursor-default"
       }`}
       aria-label={filled ? `huruf ${letter}` : "slot kosong"}
@@ -1144,7 +1144,7 @@ function InfoDialog({ onClose }: { onClose: () => void }) {
     <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/65 backdrop-blur-sm px-4 py-6">
       <FrameBox
         src={ASSETS.backgrounds.frameMainMenu}
-        className="flex flex-col items-center gap-4 px-5 py-6 sm:px-8 sm:py-8 max-w-lg w-full animate-pop bg-black/40 max-h-[90vh] overflow-y-auto"
+        className="flex flex-col items-center fl-gap px-5 py-6 sm:px-8 sm:py-8 max-w-lg w-full animate-pop bg-black/40 max-h-[85vh] overflow-y-auto"
       >
         <img
           src={ASSETS.text.welcome}

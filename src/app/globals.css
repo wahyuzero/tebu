@@ -65,7 +65,7 @@
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-3: oklch(0.398 0.07 227.325);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
@@ -75,7 +75,7 @@
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
 .dark {
@@ -98,7 +98,7 @@
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-2: oklch(0.696 0.17 162.425);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
@@ -120,16 +120,92 @@
     @apply bg-background text-foreground;
     overscroll-behavior: none;
     overflow: hidden;
-    height: 100%;
     height: 100dvh;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
-    -webkit-overflow-scrolling: auto;
   }
-  #__next {
+  #__next, main {
     height: 100%;
     overflow: hidden;
   }
+}
+
+/* ===== Fluid game sizing utilities =====
+   clamp(min, preferred, max) scales linearly between min and max
+   as the viewport width goes from 360px to 768px.
+   Uses vw (not vmin) because game is portrait-primary. */
+
+/* Fluid icon sizes (buttons, music, exit, info) */
+@utility fl-icon {
+  width: clamp(2.5rem, 10vw, 4.5rem);
+  height: clamp(2.5rem, 10vw, 4.5rem);
+}
+@utility fl-icon-sm {
+  width: clamp(2rem, 8vw, 3.5rem);
+  height: clamp(2rem, 8vw, 3.5rem);
+}
+
+/* Fluid image sizes for game content */
+@utility fl-img-hero {
+  width: clamp(10rem, 70vw, 28rem);
+  height: auto;
+}
+@utility fl-img-lg {
+  width: clamp(5rem, 40vw, 14rem);
+  height: auto;
+}
+@utility fl-img-md {
+  width: clamp(4rem, 28vw, 10rem);
+  height: auto;
+}
+@utility fl-img-sm {
+  width: clamp(2.5rem, 18vw, 6rem);
+  height: auto;
+}
+
+/* Fluid button sizes */
+@utility fl-btn {
+  width: clamp(6rem, 35vw, 14rem);
+  height: auto;
+}
+@utility fl-btn-sm {
+  width: clamp(5rem, 28vw, 10rem);
+  height: auto;
+}
+
+/* Fluid font sizes */
+@utility fl-text {
+  font-size: clamp(0.65rem, 3vw, 1rem);
+}
+@utility fl-text-lg {
+  font-size: clamp(0.8rem, 4vw, 1.25rem);
+}
+@utility fl-text-xl {
+  font-size: clamp(1rem, 5vw, 1.75rem);
+}
+
+/* Fluid gaps */
+@utility fl-gap {
+  gap: clamp(0.375rem, 2vw, 1rem);
+}
+@utility fl-gap-lg {
+  gap: clamp(0.5rem, 3vw, 1.5rem);
+}
+
+/* Fluid padding */
+@utility fl-p {
+  padding: clamp(0.5rem, 3vw, 1.25rem);
+}
+@utility fl-p-sm {
+  padding: clamp(0.25rem, 2vw, 0.75rem);
+}
+@utility fl-px {
+  padding-left: clamp(0.75rem, 4vw, 1.5rem);
+  padding-right: clamp(0.75rem, 4vw, 1.5rem);
+}
+@utility fl-py {
+  padding-top: clamp(0.5rem, 2vh, 1rem);
+  padding-bottom: clamp(0.5rem, 2vh, 1rem);
 }
 
 /* Game animations */
