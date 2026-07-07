@@ -41,20 +41,45 @@ function preloadImage(url: string): Promise<void> {
   });
 }
 
+// Audio files to preload
+const AUDIO_URLS = [
+  "/audio/sfx/correct.mp3",
+  "/audio/sfx/wrong.mp3",
+  "/audio/sfx/click.mp3",
+  "/audio/sfx/victory.mp3",
+  "/audio/sfx/shuffle.mp3",
+  "/audio/bgm/kids-world.mp3",
+];
+
+function preloadAudio(url: string): Promise<void> {
+  return new Promise((resolve) => {
+    const audio = new Audio();
+    audio.oncanplaythrough = () => resolve();
+    audio.onerror = () => resolve();
+    audio.src = url;
+    audio.load();
+  });
+}
+
 export default function GameLoader() {
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
 
   const preload = useCallback(async () => {
-    const urls = collectAllImageUrls();
-    const total = urls.length;
+    const imageUrls = collectAllImageUrls();
+    const allUrls = [...imageUrls, ...AUDIO_URLS];
+    const total = allUrls.length;
     let loaded = 0;
 
     // Load in batches of 8 for parallel but not overwhelming
     const batchSize = 8;
     for (let i = 0; i < total; i += batchSize) {
-      const batch = urls.slice(i, i + batchSize);
-      await Promise.all(batch.map(preloadImage));
+      const batch = allUrls.slice(i, i + batchSize);
+      await Promise.all(
+        batch.map((url) =>
+          url.endsWith(".mp3") ? preloadAudio(url) : preloadImage(url)
+        )
+      );
       loaded += batch.length;
       setProgress(Math.round((loaded / total) * 100));
     }

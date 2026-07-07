@@ -7,6 +7,8 @@ import {
   playPlace,
   playSuccess,
   playFail,
+  playShuffle,
+  playVictory,
   startMusic,
   stopMusic,
   setMusicEnabled,
@@ -642,7 +644,7 @@ function GameplayScreen({
 
   const shufflePool = useCallback(() => {
     if (result || isAnimatingRef.current) return;
-    playClick();
+    playShuffle();
     setPool((prev) => {
       const active = prev.map((p) => ({ ...p, used: false }));
       for (let i = active.length - 1; i > 0; i--) {
