@@ -128,7 +128,7 @@ export default function Game() {
   }, [currentLevel]);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden select-none">
+    <div className="relative w-full h-screen overflow-hidden select-none">
       {screen === "home" && (
         <HomeScreen
           onStart={() => navigate("preview")}
@@ -301,7 +301,7 @@ function HomeScreen({
 }) {
   return (
     <div
-      className="relative w-full min-h-screen flex items-center justify-center bg-cover bg-center"
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: `url(${ASSETS.backgrounds.home})` }}
     >
       <div className="absolute inset-0 bg-black/10" />
@@ -316,7 +316,7 @@ function HomeScreen({
       </div>
 
       {/* Center content: Welcome text image + Bermain button */}
-      <div className="relative z-10 flex flex-col items-center gap-8 sm:gap-12 px-4 pt-24 sm:pt-28 pb-10 max-w-3xl w-full">
+      <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-8 px-4 pt-20 sm:pt-24 pb-6 max-w-3xl w-full">
         {/* Welcome title image */}
         <img
           src={ASSETS.text.welcome}
@@ -349,7 +349,7 @@ function FruitPreviewScreen({
 }) {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-center flex flex-col items-center"
+      className="relative w-full h-screen overflow-hidden bg-cover bg-center flex flex-col items-center"
       style={{ backgroundImage: `url(${ASSETS.backgrounds.mainMenu})` }}
     >
       <div className="absolute inset-0 bg-black/30" />
@@ -377,18 +377,18 @@ function FruitPreviewScreen({
       </div>
 
       {/* Fruit grid — each card uses a flexible FrameBox */}
-      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 flex-1 flex items-center py-2">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 md:gap-8 w-full">
+      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 flex-1 min-h-0 flex items-center py-2 overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 md:gap-6 w-full">
           {FRUITS.map((fruit, idx) => (
             <FrameBox
               key={idx}
               src={ASSETS.backgrounds.frameMainMenu}
-              className="flex flex-col items-center justify-center p-4 sm:p-5 animate-slide-in-up"
+              className="flex flex-col items-center justify-center p-2 sm:p-4 animate-slide-in-up"
             >
               <img
                 src={fruit.image}
                 alt={fruit.display}
-                className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain drop-shadow-md hover:scale-110 transition-transform"
+                className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 object-contain drop-shadow-md hover:scale-110 transition-transform"
               />
             </FrameBox>
           ))}
@@ -401,7 +401,7 @@ function FruitPreviewScreen({
           src={ASSETS.buttons.mulai}
           alt="Mulai"
           onClick={onStart}
-          className="w-52 sm:w-60 md:w-64 hover:scale-105 active:scale-95 animate-pulse-glow"
+          className="w-40 sm:w-52 md:w-60 hover:scale-105 active:scale-95 animate-pulse-glow"
         />
       </div>
     </div>
@@ -422,7 +422,7 @@ function LevelSelectScreen({
 }) {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-center flex flex-col items-center"
+      className="relative w-full h-screen overflow-hidden bg-cover bg-center flex flex-col items-center"
       style={{ backgroundImage: `url(${ASSETS.backgrounds.mainMenu})` }}
     >
       <div className="absolute inset-0 bg-black/30" />
@@ -450,8 +450,8 @@ function LevelSelectScreen({
       </div>
 
       {/* Level grid — responsive: 2 cols on small, 5 cols on large */}
-      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 pb-8 flex-1 flex items-center">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 md:gap-8 w-full">
+      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 pb-8 flex-1 min-h-0 flex items-center overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 md:gap-6 w-full">
           {LEVELS.map((fruit, idx) => {
             const completed = completedLevels.has(idx);
             return (
@@ -737,7 +737,7 @@ function GameplayScreen({
 
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-center flex flex-col"
+      className="relative w-full h-screen overflow-hidden bg-cover bg-center flex flex-col"
       style={{ backgroundImage: `url(${ASSETS.backgrounds.mainMenu})` }}
     >
       <div className="absolute inset-0 bg-black/30" />
@@ -765,7 +765,7 @@ function GameplayScreen({
       </div>
 
       {/* Main gameplay area: side-by-side on desktop/landscape, stacked on mobile portrait */}
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-6 flex-1 flex items-center justify-center">
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 pb-6 flex-1 min-h-0 flex items-center justify-center overflow-hidden">
         {/* Desktop / landscape: two columns (fruit left, letters right) */}
         <div className="hidden md:grid grid-cols-2 gap-8 lg:gap-12 items-center w-full">
           <div className="flex justify-center">{fruitPanel}</div>
@@ -773,7 +773,7 @@ function GameplayScreen({
         </div>
 
         {/* Mobile portrait: stacked (fruit top, letters bottom) */}
-        <div className="flex md:hidden flex-col items-center gap-5 w-full">
+        <div className="flex md:hidden flex-col items-center gap-3 w-full min-h-0">
           {fruitPanel}
           {lettersPanel}
         </div>
@@ -1024,7 +1024,7 @@ function ResultOverlay({
 function TamatScreen({ onHome }: { onHome: () => void }) {
   return (
     <div
-      className="relative w-full min-h-screen bg-cover bg-center flex flex-col items-center justify-center"
+      className="relative w-full h-screen overflow-hidden bg-cover bg-center flex flex-col items-center justify-center"
       style={{ backgroundImage: `url(${ASSETS.backgrounds.home})` }}
     >
       <div className="absolute inset-0 bg-black/40" />
