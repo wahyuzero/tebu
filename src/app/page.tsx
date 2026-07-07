@@ -1,7 +1,7 @@
 "use client";
 
-import Game from "@/components/game/Game";
+import GameLoader from "@/components/game/GameLoader";
 
 export default function Home() {
-  return <Game />;
+  return <GameLoader />;
 }
