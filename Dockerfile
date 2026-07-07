@@ -1,18 +1,18 @@
-FROM oven/bun:1 AS base
+FROM node:20-slim AS base
 WORKDIR /app
 
 # Install dependencies
 FROM base AS deps
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+RUN npm install
 
 # Build
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bunx prisma generate
+RUN npx prisma generate
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN bun run build
+RUN npm run build
 
 # Production
 FROM base AS runner
@@ -28,4 +28,4 @@ COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 3000
-CMD ["node", "server.js", "-H", "0.0.0.0"]
+CMD ["node", "server.js"]
