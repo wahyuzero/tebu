@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.gitignore
+*.md
+.env*
+db/custom.db
+dev.log
+server.log
+.zscripts
+download
