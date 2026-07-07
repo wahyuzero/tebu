@@ -507,6 +507,7 @@ function GameplayScreen({
   isLastLevel: boolean;
 }) {
   const fruit: Fruit = LEVELS[level];
+  const isCompact = fruit.letters.length > 6;
   const [pool, setPool] = useState<PoolLetter[]>(() =>
     buildLetterPool(fruit).map((l, i) => ({ id: i, letter: l, used: false }))
   );
@@ -659,13 +660,13 @@ function GameplayScreen({
       <img
         src={ASSETS.backgrounds.frameBuah}
         alt=""
-        className="w-60 sm:w-72 md:w-80 lg:w-96 h-auto object-contain pointer-events-none drop-shadow-xl"
+        className={`${isCompact ? "w-[clamp(6rem,40vw,14rem)]" : "w-[clamp(8rem,55vw,20rem)]"} h-auto object-contain pointer-events-none drop-shadow-xl`}
       />
       <div className="absolute inset-0 flex items-center justify-center pt-2">
         <img
           src={fruit.image}
           alt={fruit.display}
-          className="w-36 sm:w-44 md:w-48 lg:w-52 h-auto object-contain drop-shadow-lg"
+          className={`${isCompact ? "w-[clamp(3.5rem,24vw,8rem)]" : "w-[clamp(5rem,32vw,12rem)]"} h-auto object-contain drop-shadow-lg`}
         />
       </div>
     </div>
@@ -674,16 +675,18 @@ function GameplayScreen({
   // Letters panel (right on desktop/landscape, bottom on mobile portrait)
   // Includes: instruction image (placeholder), answer slots, letter pool
   const lettersPanel = (
-    <div className="flex flex-col items-center gap-4 sm:gap-5 w-full max-w-lg">
-      {/* Instruction image (placeholder above letters) */}
-      <img
-        src={ASSETS.text.mainGame}
-        alt="Susun Huruf Menjadi Nama Buah Yang Benar"
-        className="w-full max-w-md h-auto object-contain drop-shadow-md"
-      />
+    <div className={`flex flex-col items-center ${isCompact ? "gap-2" : "gap-4 sm:gap-5"} w-full max-w-lg`}>
+      {/* Instruction image — hidden on compact to save space */}
+      {!isCompact && (
+        <img
+          src={ASSETS.text.mainGame}
+          alt="Susun Huruf Menjadi Nama Buah Yang Benar"
+          className="w-full max-w-md h-auto object-contain drop-shadow-md"
+        />
+      )}
 
       {/* Answer slots */}
-      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-5">
+      <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-2" : "gap-3 sm:gap-4 md:gap-5"}`}>
         {slots.map((slot, i) => (
           <AnswerSlot
             key={i}
@@ -695,6 +698,7 @@ function GameplayScreen({
             filled={slot.id !== -1}
             wrong={wrong}
             onClick={() => removeLetter(i)}
+            compact={isCompact}
           />
         ))}
       </div>
@@ -707,7 +711,7 @@ function GameplayScreen({
         src={ASSETS.backgrounds.frameHuruf}
         className="w-full bg-black/35"
       >
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 p-3 sm:p-4">
+        <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-1.5 p-2" : "gap-2 sm:gap-3 p-3 sm:p-4"}`}>
           {pool.map((p) => (
             <LetterTile
               key={p.id}
@@ -718,6 +722,7 @@ function GameplayScreen({
               letter={p.letter}
               disabled={p.used || result !== null}
               onClick={() => placeLetter(p.id)}
+              compact={isCompact}
             />
           ))}
         </div>
@@ -727,9 +732,9 @@ function GameplayScreen({
       {!result && (
         <button
           onClick={shufflePool}
-          className="mt-1 px-7 py-2.5 rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform"
+          className={`${isCompact ? "mt-0.5 px-4 py-1.5" : "mt-1 px-7 py-2.5"} rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform`}
         >
-          <span className="fl-text-lg font-bold text-white">Acak Huruf</span>
+          <span className={`${isCompact ? "fl-text" : "fl-text-lg"} font-bold text-white`}>Acak Huruf</span>
         </button>
       )}
     </div>
@@ -810,14 +815,15 @@ const AnswerSlot = forwardRef<
     filled: boolean;
     wrong: boolean;
     onClick: () => void;
+    compact?: boolean;
   }
->(function AnswerSlot({ letter, filled, wrong, onClick }, ref) {
+>(function AnswerSlot({ letter, filled, wrong, onClick, compact }, ref) {
   return (
     <button
       ref={ref}
       onClick={onClick}
       disabled={!filled}
-      className={`relative w-[clamp(2rem,10vw,3.5rem)] h-[clamp(2.5rem,12vw,4.5rem)] flex items-center justify-center transition-all ${
+      className={`relative ${compact ? "w-[clamp(1.5rem,7vw,2.5rem)] h-[clamp(2rem,9vw,3rem)]" : "w-[clamp(2rem,10vw,3.5rem)] h-[clamp(2.5rem,12vw,4.5rem)]"} flex items-center justify-center transition-all ${
         filled ? "hover:scale-105 active:scale-95 cursor-pointer" : "cursor-default"
       }`}
       aria-label={filled ? `huruf ${letter}` : "slot kosong"}
@@ -843,14 +849,15 @@ const LetterTile = forwardRef<
     letter: string;
     disabled: boolean;
     onClick: () => void;
+    compact?: boolean;
   }
->(function LetterTile({ letter, disabled, onClick }, ref) {
+>(function LetterTile({ letter, disabled, onClick, compact }, ref) {
   return (
     <button
       ref={ref}
       onClick={onClick}
       disabled={disabled}
-      className={`relative w-12 h-14 sm:w-14 sm:h-16 md:w-16 md:h-20 flex items-center justify-center transition-all ${
+      className={`relative ${compact ? "w-[clamp(1.5rem,7vw,2.5rem)] h-[clamp(2rem,9vw,3rem)]" : "w-[clamp(2rem,9vw,3.5rem)] h-[clamp(2.5rem,11vw,4rem)]"} flex items-center justify-center transition-all ${
         disabled
           ? "opacity-30 cursor-default"
           : "hover:scale-110 hover:-translate-y-1 active:scale-95 cursor-pointer"
