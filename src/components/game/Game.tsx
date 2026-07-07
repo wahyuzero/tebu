@@ -507,7 +507,9 @@ function GameplayScreen({
   isLastLevel: boolean;
 }) {
   const fruit: Fruit = LEVELS[level];
-  const isCompact = fruit.letters.length > 6;
+  // Levels that need compact sizing (too many letters for normal layout)
+  const COMPACT_LEVELS = new Set(["STRAWBERRY"]);
+  const isCompact = COMPACT_LEVELS.has(fruit.name);
   const [pool, setPool] = useState<PoolLetter[]>(() =>
     buildLetterPool(fruit).map((l, i) => ({ id: i, letter: l, used: false }))
   );
