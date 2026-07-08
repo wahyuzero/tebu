@@ -27,7 +27,8 @@ export const metadata: Metadata = {
   keywords: ["game edukasi", "tebak buah", "TEBU", "game anak", "belajar huruf"],
   authors: [{ name: "TEBU Game" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
