@@ -81,9 +81,15 @@ export default function Game() {
   const confirmExit = useCallback(() => {
     playClick();
     setShowExitConfirm(false);
-    if (typeof window !== "undefined") {
-      window.location.reload();
-    }
+    // On Android (Capacitor), exit the app for real
+    import("@capacitor/app").then(({ App }) => {
+      App.exitApp();
+    }).catch(() => {
+      // Web fallback: go back to home screen
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+    });
   }, []);
 
   const startLevel = useCallback((idx: number) => {
