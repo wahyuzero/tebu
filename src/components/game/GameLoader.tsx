@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Game from "@/components/game/Game";
 import { ASSETS, FRUITS } from "@/lib/game-data";
 
@@ -36,7 +36,7 @@ function preloadImage(url: string): Promise<void> {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve();
-    img.onerror = () => resolve(); // don't block on failures
+    img.onerror = () => resolve();
     img.src = url;
   });
 }
@@ -61,9 +61,75 @@ function preloadAudio(url: string): Promise<void> {
   });
 }
 
+// Loading messages that cycle
+const LOADING_MESSAGES = [
+  "Menyiapkan buah-buahan...",
+  "Mengocok huruf-huruf...",
+  "Menyusun kata-kata...",
+  "Memuat level permainan...",
+  "Hampir siap!",
+];
+
+// Inline styles for animations (can't use Tailwind keyframes for these)
+const styles = `
+@keyframes fruit-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-18px) rotate(-8deg); }
+  75% { transform: translateY(10px) rotate(5deg); }
+}
+
+@keyframes fruit-pop-in {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes title-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(255,215,0,0.3), 0 4px 8px rgba(0,0,0,0.3); transform: scale(1); }
+  50% { text-shadow: 0 0 40px rgba(255,215,0,0.6), 0 4px 12px rgba(0,0,0,0.4); transform: scale(1.03); }
+}
+
+@keyframes bar-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes leaf-sway {
+  0%, 100% { transform: rotate(-15deg) translateX(0); }
+  50% { transform: rotate(10deg) translateX(5px); }
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+`;
+
 export default function GameLoader() {
   const [progress, setProgress] = useState(0);
   const [ready, setReady] = useState(false);
+  const [msgIdx, setMsgIdx] = useState(0);
+  const [showFruits, setShowFruits] = useState(false);
+  const startTime = useRef(Date.now());
+
+  // Cycle loading messages
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setMsgIdx((prev) => (prev + 1) % LOADING_MESSAGES.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Show fruits with staggered animation after brief delay
+  useEffect(() => {
+    const t = setTimeout(() => setShowFruits(true), 300);
+    return () => clearTimeout(t);
+  }, []);
 
   const preload = useCallback(async () => {
     const imageUrls = collectAllImageUrls();
@@ -71,7 +137,6 @@ export default function GameLoader() {
     const total = allUrls.length;
     let loaded = 0;
 
-    // Load in batches of 8 for parallel but not overwhelming
     const batchSize = 8;
     for (let i = 0; i < total; i += batchSize) {
       const batch = allUrls.slice(i, i + batchSize);
@@ -84,8 +149,11 @@ export default function GameLoader() {
       setProgress(Math.round((loaded / total) * 100));
     }
 
-    // Small delay so 100% is visible
-    await new Promise((r) => setTimeout(r, 300));
+    // Ensure minimum 1.5s loading time so animations are visible
+    const elapsed = Date.now() - startTime.current;
+    const remaining = Math.max(0, 1500 - elapsed);
+    await new Promise((r) => setTimeout(r, remaining));
+
     setReady(true);
   }, []);
 
@@ -95,22 +163,193 @@ export default function GameLoader() {
 
   if (ready) return <Game />;
 
+  // Pick 5 fruits to display in the loading screen
+  const displayFruits = FRUITS.slice(0, 5);
+
   return (
-    <div className="w-full h-[100dvh] flex flex-col items-center justify-center bg-gradient-to-b from-green-800 to-green-950 text-white overflow-hidden">
-      {/* Simple fruit emoji as loading indicator */}
-      <div className="text-6xl mb-8 animate-bounce">🍎</div>
-
-      <h1 className="text-2xl font-bold mb-6">Memuat TEBU...</h1>
-
-      {/* Progress bar */}
-      <div className="w-64 h-3 bg-white/20 rounded-full overflow-hidden">
+    <>
+      <style dangerouslySetInnerHTML={{ __html: styles }} />
+      <div
+        className="w-full h-[100dvh] flex flex-col items-center justify-center text-white overflow-hidden relative"
+        style={{
+          background: "linear-gradient(160deg, #1a472a 0%, #0d3320 40%, #0a2918 70%, #071f12 100%)",
+        }}
+      >
+        {/* Decorative background circles */}
         <div
-          className="h-full bg-yellow-400 rounded-full transition-all duration-200 ease-out"
-          style={{ width: `${progress}%` }}
+          className="absolute rounded-full"
+          style={{
+            width: "clamp(300px, 80vw, 600px)",
+            height: "clamp(300px, 80vw, 600px)",
+            background: "radial-gradient(circle, rgba(34,197,94,0.08) 0%, transparent 70%)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
         />
-      </div>
 
-      <p className="mt-3 text-sm text-white/70">{progress}%</p>
-    </div>
+        {/* Sparkle dots */}
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={`sparkle-${i}`}
+            className="absolute rounded-full bg-yellow-300"
+            style={{
+              width: `${4 + (i % 3) * 2}px`,
+              height: `${4 + (i % 3) * 2}px`,
+              top: `${15 + (i * 11) % 70}%`,
+              left: `${10 + (i * 13) % 80}%`,
+              animation: `sparkle ${1.5 + i * 0.3}s ease-in-out infinite`,
+              animationDelay: `${i * 0.4}s`,
+            }}
+          />
+        ))}
+
+        {/* Leaf decorations */}
+        <div
+          className="absolute text-3xl opacity-20"
+          style={{
+            top: "12%",
+            right: "15%",
+            animation: "leaf-sway 3s ease-in-out infinite",
+            fontSize: "clamp(1.5rem, 5vw, 3rem)",
+          }}
+        >
+          🍃
+        </div>
+        <div
+          className="absolute text-3xl opacity-15"
+          style={{
+            bottom: "18%",
+            left: "10%",
+            animation: "leaf-sway 4s ease-in-out infinite",
+            animationDelay: "1s",
+            fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
+            transform: "scaleX(-1)",
+          }}
+        >
+          🍃
+        </div>
+
+        {/* Main content */}
+        <div className="relative z-10 flex flex-col items-center" style={{ gap: "clamp(16px, 4vw, 32px)" }}>
+          {/* TEBU Title */}
+          <div className="text-center">
+            <h1
+              className="font-black tracking-wider"
+              style={{
+                fontSize: "clamp(3rem, 14vw, 6rem)",
+                animation: "title-glow 2s ease-in-out infinite",
+                color: "#FFD700",
+                lineHeight: 1.1,
+              }}
+            >
+              TEBU
+            </h1>
+            <p
+              className="text-white/60 font-medium"
+              style={{
+                fontSize: "clamp(0.75rem, 3vw, 1.1rem)",
+                marginTop: "clamp(4px, 1vw, 8px)",
+                letterSpacing: "0.2em",
+              }}
+            >
+              Tebak Nama Buah
+            </p>
+          </div>
+
+          {/* Bouncing fruit row */}
+          <div
+            className="flex items-end justify-center"
+            style={{
+              gap: "clamp(8px, 3vw, 20px)",
+              height: "clamp(50px, 18vw, 90px)",
+            }}
+          >
+            {displayFruits.map((fruit, i) => (
+              <div
+                key={fruit.name}
+                className="flex-shrink-0"
+                style={{
+                  opacity: showFruits ? 1 : 0,
+                  animation: showFruits
+                    ? `fruit-pop-in 0.5s ease-out ${i * 0.15}s both, fruit-float ${2 + i * 0.3}s ease-in-out ${0.5 + i * 0.15}s infinite`
+                    : "none",
+                }}
+              >
+                <img
+                  src={fruit.image}
+                  alt={fruit.name}
+                  style={{
+                    width: "clamp(36px, 14vw, 70px)",
+                    height: "clamp(36px, 14vw, 70px)",
+                    objectFit: "contain",
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.4))",
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Progress section */}
+          <div className="flex flex-col items-center" style={{ gap: "clamp(8px, 2vw, 14px)", width: "clamp(200px, 70vw, 360px)" }}>
+            {/* Progress bar */}
+            <div
+              className="w-full rounded-full overflow-hidden relative"
+              style={{
+                height: "clamp(10px, 3vw, 16px)",
+                backgroundColor: "rgba(255,255,255,0.1)",
+                boxShadow: "inset 0 2px 4px rgba(0,0,0,0.3)",
+              }}
+            >
+              <div
+                className="h-full rounded-full relative"
+                style={{
+                  width: `${progress}%`,
+                  background: "linear-gradient(90deg, #22c55e, #4ade80, #86efac, #4ade80, #22c55e)",
+                  backgroundSize: "200% 100%",
+                  animation: "bar-shimmer 2s linear infinite",
+                  transition: "width 0.3s ease-out",
+                  boxShadow: "0 0 12px rgba(34,197,94,0.5)",
+                }}
+              />
+            </div>
+
+            {/* Loading message */}
+            <p
+              className="text-white/70 font-medium text-center"
+              style={{
+                fontSize: "clamp(0.7rem, 2.5vw, 0.95rem)",
+                minHeight: "1.2em",
+                transition: "opacity 0.3s ease",
+              }}
+            >
+              {LOADING_MESSAGES[msgIdx]}
+              <span style={{ animation: "dot-pulse 1.5s infinite" }}>
+                {" "}
+                <span style={{ animationDelay: "0s" }}>.</span>
+                <span style={{ animationDelay: "0.3s" }}>.</span>
+                <span style={{ animationDelay: "0.6s" }}>.</span>
+              </span>
+            </p>
+
+            {/* Percentage */}
+            <p
+              className="text-yellow-400/80 font-bold"
+              style={{ fontSize: "clamp(0.8rem, 3vw, 1.1rem)" }}
+            >
+              {progress}%
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom credit */}
+        <p
+          className="absolute bottom-4 text-white/20"
+          style={{ fontSize: "clamp(0.55rem, 2vw, 0.75rem)" }}
+        >
+          Pixabay CC0 Audio
+        </p>
+      </div>
+    </>
   );
 }
