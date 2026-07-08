@@ -739,9 +739,16 @@ function GameplayScreen({
         <div className="flex-shrink-0 pb-1 pt-1">
           <button
             onClick={shufflePool}
-            className={`${isCompact ? "px-4 py-1.5" : "px-7 py-2.5"} rounded-full bg-gradient-to-b from-blue-400 to-blue-600 border-2 border-white shadow-lg hover:scale-110 active:scale-95 transition-transform`}
+            className="hover:scale-110 active:scale-95 transition-transform"
           >
-            <span className={`${isCompact ? "fl-text" : "fl-text-lg"} font-bold text-white`}>Acak Huruf</span>
+            <img
+              src={ASSETS.buttons.acakHuruf}
+              alt="Acak Huruf"
+              style={{
+                height: isCompact ? "clamp(2rem, 8vw, 3rem)" : "clamp(2.5rem, 10vw, 4rem)",
+                width: "auto",
+              }}
+            />
           </button>
         </div>
       )}

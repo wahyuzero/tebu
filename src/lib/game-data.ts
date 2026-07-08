@@ -126,6 +126,7 @@ export const ASSETS = {
     home: "/game/buttons/Buttone_Home.png",
     starBerhasil: "/game/buttons/Star_Berhasil.png",
     starGagal: "/game/buttons/Star_Gagal.png",
+    acakHuruf: "/game/buttons/Button_Acak_Huruf.png",
   },
   letters: {
     // Single letter tile image, e.g. "A" -> /game/letters/Huruf_A.png
