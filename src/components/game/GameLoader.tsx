@@ -172,9 +172,13 @@ export default function GameLoader() {
       <div
         className="w-full h-[100dvh] flex flex-col items-center justify-center text-white overflow-hidden relative"
         style={{
-          background: "linear-gradient(160deg, #1a472a 0%, #0d3320 40%, #0a2918 70%, #071f12 100%)",
+          backgroundImage: "url(/game/backgrounds/Home_Background.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-black/30" />
         {/* Decorative background circles */}
         <div
           className="absolute rounded-full"
