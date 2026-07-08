@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef, forwardRef, useMemo } from "react";
+import { App as CapApp } from "@capacitor/app";
 import { LEVELS, FRUITS, buildLetterPool, ASSETS, type Fruit } from "@/lib/game-data";
 import {
   playClick,
@@ -82,9 +83,7 @@ export default function Game() {
     playClick();
     setShowExitConfirm(false);
     // On Android (Capacitor), exit the app for real
-    import("@capacitor/app").then(({ App }) => {
-      App.exitApp();
-    }).catch(() => {
+    CapApp.exitApp().catch(() => {
       // Web fallback: go back to home screen
       if (typeof window !== "undefined") {
         window.location.reload();
