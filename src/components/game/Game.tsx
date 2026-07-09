@@ -721,7 +721,7 @@ function GameplayScreen({
           src={ASSETS.backgrounds.frameHuruf}
           className="w-full bg-black/35"
         >
-          <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-1.5 p-1.5" : "gap-1.5 sm:gap-2 p-1.5 sm:p-2"}`}>
+          <div className={`grid justify-items-center ${isCompact ? "gap-1.5 p-1.5" : "gap-1.5 sm:gap-2 p-1.5 sm:p-2"}`} style={{ gridTemplateColumns: `repeat(${Math.ceil(pool.length / 2)}, 1fr)` }}>
             {pool.map((p) => (
               <LetterTile
                 key={p.id}
@@ -877,7 +877,7 @@ const LetterTile = forwardRef<
       ref={ref}
       onClick={onClick}
       disabled={disabled}
-      className={`relative ${compact ? "w-[clamp(2rem,10vw,3.5rem)] h-[clamp(2.5rem,12vw,4rem)]" : "w-[clamp(2.5rem,12vw,4.5rem)] h-[clamp(3rem,14vw,5rem)]"} flex items-center justify-center transition-all ${
+      className={`relative ${compact ? "w-full max-w-[3.5rem] aspect-[5/6]" : "w-full max-w-[4.5rem] aspect-[5/6]"} flex items-center justify-center transition-all ${
         disabled
           ? "opacity-30 cursor-default"
           : "hover:scale-110 hover:-translate-y-1 active:scale-95 cursor-pointer"
