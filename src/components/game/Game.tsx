@@ -811,34 +811,28 @@ function GameplayScreen({
           alt={`Level ${level + 1}`}
           className="h-10 sm:h-12 md:h-16 w-auto object-contain drop-shadow-lg"
         />
-        {/* Timer — image 734x314, aspect-ratio 734/314. Stopwatch left, banner right */}
-        <div className="relative" style={{ width: "clamp(7rem, 25vw, 11rem)", aspectRatio: "734 / 314" }}>
-          <img
-            src={ASSETS.timer.bg}
-            alt="Timer"
-            className="absolute inset-0 w-full h-full"
-          />
-          {/* Digits on banner: banner starts ~38% from left, ends ~95% */}
-          <div className="absolute z-10 flex items-center" style={{ top: "18%", bottom: "18%", left: "40%", right: "6%" }}>
-            {(() => {
-              const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-              const ss = String(timeLeft % 60).padStart(2, "0");
-              const digits = [mm[0], mm[1], ":", ss[0], ss[1]];
-              return digits.map((d, i) =>
-                d === ":" ? (
-                  <span key={i} className="font-bold text-red-800 leading-none" style={{ fontSize: "clamp(0.45rem, 1.8vw, 0.8rem)", margin: "0 1px" }}>:</span>
-                ) : (
-                  <img
-                    key={i}
-                    src={ASSETS.timer.digit(parseInt(d))}
-                    alt={d}
-                    className="h-full w-auto object-contain"
-                    style={{ marginLeft: "1px" }}
-                  />
-                )
-              );
-            })()}
-          </div>
+        {/* Timer — styled to match game's golden glossy UI */}
+        <div
+          className="relative flex items-center gap-1.5 rounded-full overflow-hidden"
+          style={{
+            padding: "clamp(0.2rem, 0.8vw, 0.35rem) clamp(0.5rem, 2vw, 0.9rem)",
+            background: "linear-gradient(180deg, #fde68a 0%, #f59e0b 40%, #d97706 100%)",
+            border: "2px solid #92400e",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
+            minWidth: "clamp(5.5rem, 18vw, 8rem)",
+          }}
+        >
+          <span style={{ fontSize: "clamp(0.9rem, 3.5vw, 1.4rem)", filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.3))" }}>⏱️</span>
+          <span
+            className="font-extrabold tracking-wider leading-none"
+            style={{
+              fontSize: "clamp(0.85rem, 3.2vw, 1.3rem)",
+              color: timeLeft <= 10 ? "#dc2626" : "#78350f",
+              textShadow: "0 1px 0 rgba(255,255,255,0.5), 0 -1px 0 rgba(0,0,0,0.15)",
+            }}
+          >
+            {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:{String(timeLeft % 60).padStart(2, "0")}
+          </span>
         </div>
       </div>
 
