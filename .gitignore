@@ -63,3 +63,4 @@ debug-*.png
 debug-*.py
 test_*.py
 3456
+.venv
