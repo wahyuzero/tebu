@@ -815,7 +815,7 @@ function GameplayScreen({
         <div
           className="relative flex-shrink-0"
           style={{
-            width: "clamp(7rem, 22vw, 11rem)",
+            width: "clamp(7rem, 24vw, 13rem)",
             aspectRatio: "399 / 166",
           }}
         >
@@ -830,8 +830,8 @@ function GameplayScreen({
             style={{
               top: "15%",
               bottom: "15%",
-              left: "28%",
-              right: "8%",
+              left: "35%",
+              right: "18%",
               filter: timeLeft <= 10
                 ? "saturate(3) hue-rotate(-30deg) brightness(0.8)"
                 : "none",
@@ -847,7 +847,7 @@ function GameplayScreen({
                     key={i}
                     className="font-black leading-none select-none"
                     style={{
-                      fontSize: "clamp(0.7rem, 2.8vw, 1.2rem)",
+                      fontSize: "clamp(0.6rem, 2.4vw, 1rem)",
                       color: timeLeft <= 10 ? "#dc2626" : "#92400e",
                       textShadow: "0 1px 0 rgba(255,255,255,0.5)",
                       margin: "0 clamp(0.05rem, 0.3vw, 0.15rem)",
@@ -860,7 +860,7 @@ function GameplayScreen({
                     key={i}
                     src={ASSETS.timer.digit(parseInt(d))}
                     alt={d}
-                    className="h-full w-auto object-contain"
+                    className="h-[40%] w-auto object-contain max-w-[18%]"
                     draggable={false}
                   />
                 ),
