@@ -15,7 +15,7 @@ import {
   setMusicEnabled,
 } from "@/lib/sound";
 
-type Screen = "home" | "preview" | "levels" | "play" | "tamat";
+type Screen = "home" | "preview" | "levels" | "play";
 
 interface PoolLetter {
   id: number;
@@ -125,13 +125,9 @@ export default function Game() {
 
   const nextLevel = useCallback(() => {
     playClick();
-    if (currentLevel + 1 >= LEVELS.length) {
-      setScreen("tamat");
-    } else {
-      setCurrentLevel(currentLevel + 1);
-      setResult(null);
-      setPlayToken((t) => t + 1);
-    }
+    setCurrentLevel(currentLevel + 1);
+    setResult(null);
+    setPlayToken((t) => t + 1);
   }, [currentLevel]);
 
   return (
@@ -174,15 +170,6 @@ export default function Game() {
           onRetry={retryLevel}
           onNext={nextLevel}
           isLastLevel={currentLevel === LEVELS.length - 1}
-        />
-      )}
-
-      {screen === "tamat" && (
-        <TamatScreen
-          onHome={() => {
-            playClick();
-            setScreen("home");
-          }}
         />
       )}
 
@@ -1096,72 +1083,41 @@ function ResultOverlay({
         />
 
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
-          <ImgButton
-            src={ASSETS.buttons.home}
-            alt="Kembali"
-            onClick={onBack}
-            className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-110 active:scale-95"
-          />
-          <ImgButton
-            src={ASSETS.buttons.ulangi}
-            alt="Ulangi"
-            onClick={onRetry}
-            className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 hover:scale-110 active:scale-95"
-          />
-          {/* Lanjut button only when not last level */}
-          {success && !isLastLevel && (
+          {success && isLastLevel ? (
+            /* Last level done — only Home button */
             <ImgButton
-              src={ASSETS.buttons.lanjut}
-              alt="Lanjut"
-              onClick={onNext}
-              className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 hover:scale-110 active:scale-95 animate-pulse-glow"
+              src={ASSETS.buttons.home}
+              alt="Kembali ke Home"
+              onClick={onBack}
+              className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 hover:scale-110 active:scale-95 animate-pulse-glow"
             />
+          ) : (
+            /* Normal level — Home + Ulangi + (Lanjut if success) */
+            <>
+              <ImgButton
+                src={ASSETS.buttons.home}
+                alt="Kembali"
+                onClick={onBack}
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 hover:scale-110 active:scale-95"
+              />
+              <ImgButton
+                src={ASSETS.buttons.ulangi}
+                alt="Ulangi"
+                onClick={onRetry}
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 hover:scale-110 active:scale-95"
+              />
+              {success && (
+                <ImgButton
+                  src={ASSETS.buttons.lanjut}
+                  alt="Lanjut"
+                  onClick={onNext}
+                  className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 hover:scale-110 active:scale-95 animate-pulse-glow"
+                />
+              )}
+            </>
           )}
         </div>
       </FrameBox>
-    </div>
-  );
-}
-
-/* ============================================================
-   TAMAT (FINAL) SCREEN
-   ============================================================ */
-function TamatScreen({ onHome }: { onHome: () => void }) {
-  return (
-    <div
-      className="relative w-full h-screen overflow-hidden bg-cover bg-center flex flex-col items-center justify-center"
-      style={{ backgroundImage: `url(${ASSETS.backgrounds.home})` }}
-    >
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="relative z-10 flex flex-col items-center gap-6 px-4 text-center">
-        <img
-          src={ASSETS.buttons.gameSelesai}
-          alt="Game Selesai"
-          className="w-64 sm:w-80 md:w-96 object-contain drop-shadow-2xl animate-bounce-in"
-        />
-        {/* Congrats card uses FrameBox + Text_Berhasil + star */}
-        <FrameBox
-          src={ASSETS.backgrounds.frameMainMenu}
-          className="flex flex-col items-center gap-3 px-6 py-6 sm:px-10 sm:py-8 max-w-md w-full bg-black/30"
-        >
-          <img
-            src={ASSETS.buttons.starBerhasil}
-            alt="Berhasil"
-            className="w-40 sm:w-48 object-contain animate-pulse-glow"
-          />
-          <img
-            src={ASSETS.text.berhasil}
-            alt="Selamat kamu berhasil"
-            className="w-[90%] max-w-xs object-contain drop-shadow animate-slide-in-up"
-          />
-        </FrameBox>
-        <ImgButton
-          src={ASSETS.buttons.mulai}
-          alt="Kembali ke Home"
-          onClick={onHome}
-          className="w-48 sm:w-56 hover:scale-105 active:scale-95"
-        />
-      </div>
     </div>
   );
 }
