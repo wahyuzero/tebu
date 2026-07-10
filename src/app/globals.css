@@ -135,79 +135,15 @@
    as the viewport width goes from 360px to 768px.
    Uses vw (not vmin) because game is portrait-primary. */
 
-/* Fluid icon sizes (buttons, music, exit, info) */
-@utility fl-icon {
-  width: clamp(2.5rem, 10vw, 4.5rem);
-  height: clamp(2.5rem, 10vw, 4.5rem);
-}
 @utility fl-icon-sm {
   width: clamp(2rem, 8vw, 3.5rem);
   height: clamp(2rem, 8vw, 3.5rem);
-}
-
-/* Fluid image sizes for game content */
-@utility fl-img-hero {
-  width: clamp(10rem, 70vw, 28rem);
-  height: auto;
-}
-@utility fl-img-lg {
-  width: clamp(5rem, 40vw, 14rem);
-  height: auto;
-}
-@utility fl-img-md {
-  width: clamp(4rem, 28vw, 10rem);
-  height: auto;
-}
-@utility fl-img-sm {
-  width: clamp(2.5rem, 18vw, 6rem);
-  height: auto;
-}
-
-/* Fluid button sizes */
-@utility fl-btn {
-  width: clamp(6rem, 35vw, 14rem);
-  height: auto;
-}
-@utility fl-btn-sm {
-  width: clamp(5rem, 28vw, 10rem);
-  height: auto;
-}
-
-/* Fluid font sizes */
-@utility fl-text {
-  font-size: clamp(0.65rem, 3vw, 1rem);
-}
-@utility fl-text-lg {
-  font-size: clamp(0.8rem, 4vw, 1.25rem);
-}
-@utility fl-text-xl {
-  font-size: clamp(1rem, 5vw, 1.75rem);
 }
 
 /* Fluid gaps */
 @utility fl-gap {
   gap: clamp(0.375rem, 2vw, 1rem);
 }
-@utility fl-gap-lg {
-  gap: clamp(0.5rem, 3vw, 1.5rem);
-}
-
-/* Fluid padding */
-@utility fl-p {
-  padding: clamp(0.5rem, 3vw, 1.25rem);
-}
-@utility fl-p-sm {
-  padding: clamp(0.25rem, 2vw, 0.75rem);
-}
-@utility fl-px {
-  padding-left: clamp(0.75rem, 4vw, 1.5rem);
-  padding-right: clamp(0.75rem, 4vw, 1.5rem);
-}
-@utility fl-py {
-  padding-top: clamp(0.5rem, 2vh, 1rem);
-  padding-bottom: clamp(0.5rem, 2vh, 1rem);
-}
-
 /* Game animations */
 @keyframes pop {
   0% { transform: scale(0.7); opacity: 0; }

@@ -230,7 +230,7 @@ function MusicToggleButton({
         <img
           src={ASSETS.buttons.musicOn}
           alt="Music"
-          className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all ${
+          className={`w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all ${
             musicOn ? "" : "opacity-50 grayscale"
           }`}
         />
@@ -259,7 +259,7 @@ function ExitButton({ onClick }: { onClick: () => void }) {
       <img
         src={ASSETS.buttons.keluar}
         alt="Keluar"
-        className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
       />
     </button>
   );
@@ -280,7 +280,7 @@ function InfoButton({ onClick }: { onClick: () => void }) {
       <img
         src={ASSETS.buttons.info}
         alt="Info"
-        className="w-[4.6rem] h-[4.6rem] sm:w-[5.75rem] sm:h-[5.75rem] md:w-[6.9rem] md:h-[6.9rem] object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+        className="w-[5.75rem] h-[5.75rem] sm:w-[6.9rem] sm:h-[6.9rem] md:w-[8rem] md:h-[8rem] object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
       />
     </button>
   );
@@ -314,8 +314,8 @@ function HomeScreen({
       <div className="absolute inset-0 bg-black/10" />
 
       {/* Top bar: [Music] [INFO] on LEFT, [Exit] on RIGHT */}
-      <div className="absolute top-0 left-0 right-0 z-20 flex items-start justify-between p-4 sm:p-6 md:p-8">
-        <div className="flex items-center gap-3 sm:gap-4">
+      <div className="absolute top-0 left-0 right-0 z-20 flex items-start justify-between p-5 sm:p-7 md:p-10">
+        <div className="flex items-center gap-4 sm:gap-5">
           <MusicToggleButton musicOn={musicOn} onToggle={onToggleMusic} />
           <InfoButton onClick={onInfo} />
         </div>
@@ -323,19 +323,19 @@ function HomeScreen({
       </div>
 
       {/* Center content: Welcome text image + Bermain button */}
-      <div className="relative z-10 flex flex-col items-center gap-4 sm:gap-8 px-4 pt-20 sm:pt-24 pb-6 max-w-3xl w-full">
+      <div className="relative z-10 flex flex-col items-center gap-5 sm:gap-10 px-4 pt-16 sm:pt-20 pb-6 max-w-3xl w-full">
         {/* Welcome title image */}
         <img
           src={ASSETS.text.welcome}
           alt="Game Edukasi Anak TEBU Tebak Nama Buah"
-          className="w-[92%] sm:w-[85%] md:w-[78%] max-w-2xl h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.55)] animate-float"
+          className="w-[88%] sm:w-[80%] md:w-[72%] max-w-2xl h-auto object-contain drop-shadow-[0_6px_12px_rgba(0,0,0,0.55)] animate-float"
         />
 
         <ImgButton
           src={ASSETS.buttons.bermain}
           alt="Bermain"
           onClick={onStart}
-          className="w-40 sm:w-44 md:w-48 hover:scale-105 active:scale-95 animate-pulse-glow"
+          className="w-48 sm:w-56 md:w-64 hover:scale-105 active:scale-95 animate-pulse-glow"
         />
       </div>
     </div>
@@ -384,18 +384,18 @@ function FruitPreviewScreen({
       </div>
 
       {/* Fruit grid — each card uses a flexible FrameBox */}
-      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 flex-1 min-h-0 flex items-center py-2 overflow-hidden">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 md:gap-6 w-full">
+      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-8 flex-1 min-h-0 flex items-center py-2 overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 md:gap-8 w-full">
           {FRUITS.map((fruit, idx) => (
             <FrameBox
               key={idx}
               src={ASSETS.backgrounds.frameMainMenu}
-              className="flex flex-col items-center justify-center p-2 sm:p-4 animate-slide-in-up"
+              className="flex flex-col items-center justify-center p-3 sm:p-5 animate-slide-in-up"
             >
               <img
                 src={fruit.image}
                 alt={fruit.display}
-                className="w-[clamp(3rem,16vw,8rem)] h-[clamp(3rem,16vw,8rem)] object-contain drop-shadow-md hover:scale-110 transition-transform"
+                className="w-[clamp(4rem,22vw,10rem)] h-[clamp(4rem,22vw,10rem)] object-contain drop-shadow-md hover:scale-110 transition-transform"
               />
             </FrameBox>
           ))}
@@ -403,12 +403,12 @@ function FruitPreviewScreen({
       </div>
 
       {/* Mulai button */}
-      <div className="relative z-10 pb-6 sm:pb-8 pt-2">
+      <div className="relative z-10 pb-6 sm:pb-10 pt-2">
         <ImgButton
           src={ASSETS.buttons.mulai}
           alt="Mulai"
           onClick={onStart}
-          className="w-40 sm:w-52 md:w-60 hover:scale-105 active:scale-95 animate-pulse-glow"
+          className="w-48 sm:w-60 md:w-72 hover:scale-105 active:scale-95 animate-pulse-glow"
         />
       </div>
     </div>
@@ -456,9 +456,9 @@ function LevelSelectScreen({
         <div className="fl-icon-sm" />
       </div>
 
-      {/* Level grid — responsive: 2 cols on small, 5 cols on large */}
-      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-6 pb-8 flex-1 min-h-0 flex items-center overflow-hidden">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-4 md:gap-6 w-full">
+      {/* Level grid — responsive: 2 cols on small, 4 cols on medium+ */}
+      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-8 pb-8 flex-1 min-h-0 flex items-center overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5 md:gap-8 w-full">
           {LEVELS.map((fruit, idx) => {
             const completed = completedLevels.has(idx);
             return (
@@ -471,7 +471,7 @@ function LevelSelectScreen({
                 <img
                   src={ASSETS.buttons.level(idx + 1)}
                   alt={`Level ${idx + 1}`}
-                  className="w-full h-auto object-contain drop-shadow-lg fl-img-sm"
+                  className="w-full h-auto object-contain drop-shadow-lg"
                 />
                 {completed && (
                   <span
@@ -496,6 +496,9 @@ function LevelSelectScreen({
    - Mobile portrait: stacked (fruit top, letters bottom)
    - Uses Main_Game_Text image as instruction
    ============================================================ */
+// Levels that need compact sizing (too many letters for normal layout)
+const COMPACT_LEVELS = new Set(["STRAWBERRY"]);
+
 function GameplayScreen({
   level,
   onBack,
@@ -515,7 +518,6 @@ function GameplayScreen({
 }) {
   const fruit: Fruit = LEVELS[level];
   // Levels that need compact sizing (too many letters for normal layout)
-  const COMPACT_LEVELS = new Set(["STRAWBERRY"]);
   const isCompact = COMPACT_LEVELS.has(fruit.name);
   const [pool, setPool] = useState<PoolLetter[]>(() =>
     buildLetterPool(fruit).map((l, i) => ({ id: i, letter: l, used: false }))
@@ -525,6 +527,12 @@ function GameplayScreen({
   );
   const [wrong, setWrong] = useState(false);
   const checkedRef = useRef(false);
+  const onResultRef = useRef(onResult);
+  useEffect(() => { onResultRef.current = onResult; }, [onResult]);
+  const poolRef = useRef(pool);
+  useEffect(() => { poolRef.current = pool; }, [pool]);
+  const slotsRef = useRef(slots);
+  useEffect(() => { slotsRef.current = slots; }, [slots]);
 
   // --- Timer ---
   const TIMER_SECONDS = 60;
@@ -543,32 +551,17 @@ function GameplayScreen({
           clearInterval(timerRef.current!);
           timerRef.current = null;
           // Trigger fail
-          setTimeout(() => onResult(false), 0);
+          setTimeout(() => onResultRef.current(false), 0);
           return 0;
         }
         return t - 1;
       });
     }, 1000);
     return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
-  }, [result, onResult]);
+  }, [result]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // --- Flying letter animation system ---
-  // A flying letter is rendered as an absolutely-positioned <img> that animates
-  // from a source point to a target point using a CSS transition on transform.
-  interface FlyingLetter {
-    key: number;
-    letter: string;
-    fromX: number;
-    fromY: number;
-    toX: number;
-    toY: number;
-    size: number;
-    // callback to run after the animation completes (apply state change)
-    onDone: () => void;
-    // direction: "to-slot" or "to-pool"
-    dir: "to-slot" | "to-pool";
-  }
-  const [flying, setFlying] = useState<FlyingLetter[]>([]);
+  const [flying, setFlying] = useState<FlyingLetterData[]>([]);
   const flyingKeyRef = useRef(0);
   // Refs to actual DOM tiles so we can read their screen positions
   const poolTileRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
@@ -587,10 +580,10 @@ function GameplayScreen({
   const placeLetter = useCallback(
     (poolId: number) => {
       if (result || checkedRef.current || isAnimatingRef.current) return;
-      const poolItem = pool.find((p) => p.id === poolId);
+      const poolItem = poolRef.current.find((p) => p.id === poolId);
       if (!poolItem || poolItem.used) return;
 
-      const emptyIdx = slots.findIndex((s) => s.id === -1);
+      const emptyIdx = slotsRef.current.findIndex((s) => s.id === -1);
       if (emptyIdx === -1) return;
 
       const fromEl = poolTileRefs.current.get(poolId);
@@ -605,10 +598,12 @@ function GameplayScreen({
       const key = flyingKeyRef.current++;
       const onDone = () => {
         // Apply the real state change after the flight animation
-        const newSlots = [...slots];
+        const curSlots = slotsRef.current;
+        const curPool = poolRef.current;
+        const newSlots = [...curSlots];
         newSlots[emptyIdx] = { id: poolId, letter: poolItem.letter };
         setSlots(newSlots);
-        const newPool = pool.map((p) => (p.id === poolId ? { ...p, used: true } : p));
+        const newPool = curPool.map((p) => (p.id === poolId ? { ...p, used: true } : p));
         setPool(newPool);
         setWrong(false);
         setFlying((prev) => prev.filter((f) => f.key !== key));
@@ -634,13 +629,13 @@ function GameplayScreen({
         { key, letter: poolItem.letter, fromX: from.x, fromY: from.y, toX: to.x, toY: to.y, size, onDone, dir: "to-slot" },
       ]);
     },
-    [pool, slots, result, fruit, onResult, getCenter]
+    [result, getCenter]
   );
 
   const removeLetter = useCallback(
     (slotIdx: number) => {
       if (result || isAnimatingRef.current) return;
-      const slot = slots[slotIdx];
+      const slot = slotsRef.current[slotIdx];
       if (slot.id === -1) return;
 
       const fromEl = slotRefs.current.get(slotIdx);
@@ -654,10 +649,12 @@ function GameplayScreen({
 
       const key = flyingKeyRef.current++;
       const onDone = () => {
-        const newSlots = [...slots];
+        const curSlots = slotsRef.current;
+        const curPool = poolRef.current;
+        const newSlots = [...curSlots];
         newSlots[slotIdx] = { id: -1, letter: "" };
         setSlots(newSlots);
-        const newPool = pool.map((p) => (p.id === slot.id ? { ...p, used: false } : p));
+        const newPool = curPool.map((p) => (p.id === slot.id ? { ...p, used: false } : p));
         setPool(newPool);
         setWrong(false);
         checkedRef.current = false;
@@ -670,7 +667,7 @@ function GameplayScreen({
         { key, letter: slot.letter, fromX: from.x, fromY: from.y, toX: to.x, toY: to.y, size, onDone, dir: "to-pool" },
       ]);
     },
-    [pool, slots, result, getCenter]
+    [result, getCenter]
   );
 
   const shufflePool = useCallback(() => {
@@ -695,13 +692,13 @@ function GameplayScreen({
       <img
         src={ASSETS.backgrounds.frameBuah}
         alt=""
-        className={`${isCompact ? "w-[clamp(6rem,40vw,14rem)]" : "w-[clamp(8rem,55vw,20rem)]"} h-auto object-contain pointer-events-none drop-shadow-xl`}
+        className={`${isCompact ? "w-[clamp(7rem,45vw,16rem)]" : "w-[clamp(9rem,60vw,22rem)]"} h-auto object-contain pointer-events-none drop-shadow-xl`}
       />
       <div className="absolute inset-0 flex items-center justify-center pt-2">
         <img
           src={fruit.image}
           alt={fruit.display}
-          className={`${isCompact ? "w-[clamp(3.5rem,24vw,8rem)]" : "w-[clamp(5rem,32vw,12rem)]"} h-auto object-contain drop-shadow-lg`}
+          className={`${isCompact ? "w-[clamp(4rem,28vw,9rem)]" : "w-[clamp(5.5rem,36vw,14rem)]"} h-auto object-contain drop-shadow-lg`}
         />
       </div>
     </div>
@@ -718,12 +715,12 @@ function GameplayScreen({
           <img
             src={ASSETS.text.mainGame}
             alt="Susun Huruf Menjadi Nama Buah Yang Benar"
-            className="w-full max-w-md h-auto object-contain drop-shadow-md"
+            className="w-full max-w-lg h-auto object-contain drop-shadow-md"
           />
         )}
 
         {/* Answer slots */}
-        <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-2" : "gap-3 sm:gap-4 md:gap-5"}`}>
+        <div className={`flex flex-wrap items-center justify-center ${isCompact ? "gap-2.5" : "gap-3 sm:gap-4 md:gap-5"}`}>
           {slots.map((slot, i) => (
             <AnswerSlot
               key={i}
@@ -815,7 +812,7 @@ function GameplayScreen({
         <div
           className="relative flex-shrink-0"
           style={{
-            width: "clamp(7rem, 24vw, 13rem)",
+            width: "clamp(9rem, 26vw, 13rem)",
             aspectRatio: "399 / 166",
           }}
         >
@@ -828,10 +825,10 @@ function GameplayScreen({
           <div
             className="absolute flex items-center justify-center gap-0"
             style={{
-              top: "15%",
-              bottom: "15%",
-              left: "35%",
-              right: "18%",
+              top: "12%",
+              bottom: "12%",
+              left: "34%",
+              right: "17%",
               filter: timeLeft <= 10
                 ? "saturate(3) hue-rotate(-30deg) brightness(0.8)"
                 : "none",
@@ -847,7 +844,7 @@ function GameplayScreen({
                     key={i}
                     className="font-black leading-none select-none"
                     style={{
-                      fontSize: "clamp(0.6rem, 2.4vw, 1rem)",
+                      fontSize: "clamp(0.8rem, 3.2vw, 1.4rem)",
                       color: timeLeft <= 10 ? "#dc2626" : "#92400e",
                       textShadow: "0 1px 0 rgba(255,255,255,0.5)",
                       margin: "0 clamp(0.05rem, 0.3vw, 0.15rem)",
@@ -860,7 +857,7 @@ function GameplayScreen({
                     key={i}
                     src={ASSETS.timer.digit(parseInt(d))}
                     alt={d}
-                    className="h-[40%] w-auto object-contain max-w-[18%]"
+                    className="h-[65%] w-auto object-contain max-w-[18%]"
                     draggable={false}
                   />
                 ),
@@ -924,7 +921,7 @@ const AnswerSlot = forwardRef<
       ref={ref}
       onClick={onClick}
       disabled={!filled}
-      className={`relative ${compact ? "w-[clamp(1.5rem,7vw,2.5rem)] h-[clamp(2rem,9vw,3rem)]" : "w-[clamp(2rem,10vw,3.5rem)] h-[clamp(2.5rem,12vw,4.5rem)]"} flex items-center justify-center transition-all ${
+      className={`relative ${compact ? "w-[clamp(1.8rem,8vw,3rem)] h-[clamp(2.4rem,10vw,3.5rem)]" : "w-[clamp(2.5rem,12vw,4rem)] h-[clamp(3rem,14vw,5rem)]"} flex items-center justify-center transition-all ${
         filled ? "hover:scale-105 active:scale-95 cursor-pointer" : "cursor-default"
       }`}
       aria-label={filled ? `huruf ${letter}` : "slot kosong"}
@@ -958,7 +955,7 @@ const LetterTile = forwardRef<
       ref={ref}
       onClick={onClick}
       disabled={disabled}
-      className={`relative ${compact ? "w-full max-w-[3.5rem] aspect-[5/6]" : "w-full max-w-[4.5rem] aspect-[5/6]"} flex items-center justify-center transition-all ${
+      className={`relative ${compact ? "w-full max-w-[4rem] aspect-[5/6]" : "w-full max-w-[5.5rem] aspect-[5/6]"} flex items-center justify-center transition-all ${
         disabled
           ? "opacity-30 cursor-default"
           : "hover:scale-110 hover:-translate-y-1 active:scale-95 cursor-pointer"
