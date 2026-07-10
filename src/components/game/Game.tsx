@@ -812,27 +812,27 @@ function GameplayScreen({
           className="h-10 sm:h-12 md:h-16 w-auto object-contain drop-shadow-lg"
         />
         {/* Timer */}
-        <div className="relative flex items-center" style={{ width: "clamp(5rem, 20vw, 8rem)", height: "clamp(2rem, 8vw, 3.2rem)" }}>
+        <div className="relative" style={{ width: "clamp(6rem, 22vw, 9rem)", height: "clamp(2.2rem, 9vw, 3.5rem)" }}>
           <img
             src={ASSETS.timer.bg}
             alt="Timer"
             className="absolute inset-0 w-full h-full object-contain"
           />
-          <div className="relative z-10 flex items-center justify-center w-full h-full pr-[18%]">
+          <div className="absolute inset-0 flex items-center justify-end pr-[8%] z-10">
             {(() => {
               const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
               const ss = String(timeLeft % 60).padStart(2, "0");
               const digits = [mm[0], mm[1], ":", ss[0], ss[1]];
               return digits.map((d, i) =>
                 d === ":" ? (
-                  <span key={i} className="text-[clamp(0.7rem,2.5vw,1.1rem)] font-bold text-red-800 mx-[1%] leading-none self-center mt-[5%]">:</span>
+                  <span key={i} className="font-bold text-red-800 leading-none self-center" style={{ fontSize: "clamp(0.6rem, 2.2vw, 1rem)", margin: "0 1%" }}>:</span>
                 ) : (
                   <img
                     key={i}
                     src={ASSETS.timer.digit(parseInt(d))}
                     alt={d}
-                    className="h-[65%] w-auto object-contain"
-                    style={{ marginLeft: "1%" }}
+                    className="object-contain"
+                    style={{ height: "60%", width: "auto", marginLeft: "1%" }}
                   />
                 )
               );
