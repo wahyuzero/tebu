@@ -141,4 +141,8 @@ export const ASSETS = {
     berhasil: "/game/text/Text_Berhasil.png",
     gagal: "/game/text/Text_Gagal.png",
   },
+  timer: {
+    bg: "/game/timer/timer-bg.png",
+    digit: (n: number) => `/game/timer/digits/${n}.png`,
+  },
 } as const;

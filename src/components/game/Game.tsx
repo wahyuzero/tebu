@@ -526,6 +526,32 @@ function GameplayScreen({
   const [wrong, setWrong] = useState(false);
   const checkedRef = useRef(false);
 
+  // --- Timer ---
+  const TIMER_SECONDS = 60;
+  const [timeLeft, setTimeLeft] = useState(TIMER_SECONDS);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      // Stop timer when game ends
+      if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
+      return;
+    }
+    timerRef.current = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(timerRef.current!);
+          timerRef.current = null;
+          // Trigger fail
+          setTimeout(() => onResult(false), 0);
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+    return () => { if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; } };
+  }, [result, onResult]);
+
   // --- Flying letter animation system ---
   // A flying letter is rendered as an absolutely-positioned <img> that animates
   // from a source point to a target point using a CSS transition on transform.
@@ -772,21 +798,47 @@ function GameplayScreen({
         <FlyingLetter key={f.key} data={f} duration={ANIM_MS} />
       ))}
 
-      {/* Top bar: back + level indicator (uses Button_Level_X.png) */}
-      <div className="relative z-10 w-full flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5">
+      {/* Top bar: back + level (smaller) + timer */}
+      <div className="relative z-10 w-full flex items-center justify-between px-3 sm:px-5 py-3 sm:py-4">
         <ImgButton
           src={ASSETS.buttons.home}
           alt="Kembali"
           onClick={onBack}
-          className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 hover:scale-105 active:scale-95"
+          className="w-11 h-11 sm:w-14 sm:h-14 md:w-16 md:h-16 hover:scale-105 active:scale-95"
         />
         <img
           src={ASSETS.buttons.level(level + 1)}
           alt={`Level ${level + 1}`}
-          className="h-14 sm:h-[4.5rem] md:h-24 w-auto object-contain drop-shadow-lg"
+          className="h-10 sm:h-12 md:h-16 w-auto object-contain drop-shadow-lg"
         />
-        {/* spacer for centering */}
-        <div className="fl-icon-sm" />
+        {/* Timer */}
+        <div className="relative flex items-center" style={{ width: "clamp(5rem, 20vw, 8rem)", height: "clamp(2rem, 8vw, 3.2rem)" }}>
+          <img
+            src={ASSETS.timer.bg}
+            alt="Timer"
+            className="absolute inset-0 w-full h-full object-contain"
+          />
+          <div className="relative z-10 flex items-center justify-center w-full h-full pr-[18%]">
+            {(() => {
+              const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+              const ss = String(timeLeft % 60).padStart(2, "0");
+              const digits = [mm[0], mm[1], ":", ss[0], ss[1]];
+              return digits.map((d, i) =>
+                d === ":" ? (
+                  <span key={i} className="text-[clamp(0.7rem,2.5vw,1.1rem)] font-bold text-red-800 mx-[1%] leading-none self-center mt-[5%]">:</span>
+                ) : (
+                  <img
+                    key={i}
+                    src={ASSETS.timer.digit(parseInt(d))}
+                    alt={d}
+                    className="h-[65%] w-auto object-contain"
+                    style={{ marginLeft: "1%" }}
+                  />
+                )
+              );
+            })()}
+          </div>
+        </div>
       </div>
 
       {/* Main gameplay area: side-by-side on desktop/landscape, stacked on mobile portrait */}

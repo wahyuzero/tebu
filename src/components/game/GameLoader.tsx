@@ -28,6 +28,10 @@ function collectAllImageUrls(): string[] {
   for (let c = 65; c <= 90; c++) urls.push(ASSETS.letters.letter(String.fromCharCode(c)));
   urls.push(ASSETS.letters.questionMark);
 
+  // timer: bg + digits 0-9
+  urls.push(ASSETS.timer.bg);
+  for (let i = 0; i <= 9; i++) urls.push(ASSETS.timer.digit(i));
+
   return [...new Set(urls)];
 }
 
