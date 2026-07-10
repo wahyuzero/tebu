@@ -57,4 +57,9 @@ server.log
 /android/
 capacitor.config.json
 *.apk
-bun.lockb
+bun.lockb.venv/
+test-*.png
+debug-*.png
+debug-*.py
+test_*.py
+3456
