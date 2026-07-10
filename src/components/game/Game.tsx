@@ -811,28 +811,62 @@ function GameplayScreen({
           alt={`Level ${level + 1}`}
           className="h-10 sm:h-12 md:h-16 w-auto object-contain drop-shadow-lg"
         />
-        {/* Timer — styled to match game's golden glossy UI */}
+        {/* Timer — PNG-based with timer-bg + digit sprites */}
         <div
-          className="relative flex items-center gap-1.5 rounded-full overflow-hidden"
+          className="relative flex-shrink-0"
           style={{
-            padding: "clamp(0.2rem, 0.8vw, 0.35rem) clamp(0.5rem, 2vw, 0.9rem)",
-            background: "linear-gradient(180deg, #fde68a 0%, #f59e0b 40%, #d97706 100%)",
-            border: "2px solid #92400e",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.4)",
-            minWidth: "clamp(5.5rem, 18vw, 8rem)",
+            width: "clamp(7rem, 22vw, 11rem)",
+            aspectRatio: "399 / 166",
           }}
         >
-          <span style={{ fontSize: "clamp(0.9rem, 3.5vw, 1.4rem)", filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.3))" }}>⏱️</span>
-          <span
-            className="font-extrabold tracking-wider leading-none"
+          <img
+            src={ASSETS.timer.bg}
+            alt=""
+            className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+            draggable={false}
+          />
+          <div
+            className="absolute flex items-center justify-center gap-0"
             style={{
-              fontSize: "clamp(0.85rem, 3.2vw, 1.3rem)",
-              color: timeLeft <= 10 ? "#dc2626" : "#78350f",
-              textShadow: "0 1px 0 rgba(255,255,255,0.5), 0 -1px 0 rgba(0,0,0,0.15)",
+              top: "15%",
+              bottom: "15%",
+              left: "28%",
+              right: "8%",
+              filter: timeLeft <= 10
+                ? "saturate(3) hue-rotate(-30deg) brightness(0.8)"
+                : "none",
             }}
           >
-            {String(Math.floor(timeLeft / 60)).padStart(2, "0")}:{String(timeLeft % 60).padStart(2, "0")}
-          </span>
+            {(() => {
+              const mm = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+              const ss = String(timeLeft % 60).padStart(2, "0");
+              const digits = [mm[0], mm[1], "colon", ss[0], ss[1]];
+              return digits.map((d, i) =>
+                d === "colon" ? (
+                  <span
+                    key={i}
+                    className="font-black leading-none select-none"
+                    style={{
+                      fontSize: "clamp(0.7rem, 2.8vw, 1.2rem)",
+                      color: timeLeft <= 10 ? "#dc2626" : "#92400e",
+                      textShadow: "0 1px 0 rgba(255,255,255,0.5)",
+                      margin: "0 clamp(0.05rem, 0.3vw, 0.15rem)",
+                    }}
+                  >
+                    :
+                  </span>
+                ) : (
+                  <img
+                    key={i}
+                    src={ASSETS.timer.digit(parseInt(d))}
+                    alt={d}
+                    className="h-full w-auto object-contain"
+                    draggable={false}
+                  />
+                ),
+              );
+            })()}
+          </div>
         </div>
       </div>
 
